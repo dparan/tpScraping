@@ -3,6 +3,10 @@ from math import *
 import os
 import csv
 
+def writeToCSV(filepath, liste):
+    with open(filepath, 'w') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerows(liste)
 
 def readDirJT(path):
     print('lol')
@@ -110,29 +114,19 @@ def getFetchingList(path,part):
             with open(path+part+file, 'r', encoding='ISO-8859-1') as fileE:
                 with open(cleanPath+file.replace('.txt',''),'r', encoding="UTF-8") as cleanFile:
                     if (len(list(fileE))>len(list(cleanFile))):
-                        bruit.append(file.replace('.txt',''))
+                        bruit.append([file.replace('.txt','')])
                     elif (len(list(fileE))<len(list(cleanFile))):
                         print("silence")
-                        silence.append(cleanFile)
+                        silence.append([file.replace('.txt','')])
     return [bruit,silence]
 
 def getFetchingLists():
     BS = getFetchingList("Corpus_detourage","/BS/")
     JT = getFetchingList("Corpus_detourage","/JT/")
-    liste=[]
-    for line in BS[0]:
-        liste.append([line,1,0])
-    for line in BS[1]:
-        liste.append([line,0,1])
-    for line in JT[0]:
-        if(line not in liste):
-            liste.append([line,1,0])
-    for line in JT[1]:
-        if(line not in liste):
-            liste.append([line,0,1])
-    with open('generatedDatas/ex1/resultat.csv', 'w') as csvFile:
-        writer = csv.writer(csvFile)
-        writer.writerows(liste)
-    return liste
+    writeToCSV("generatedDatas/ex1/BSBruit.csv", BS[0])
+    writeToCSV("generatedDatas/ex1/BSSilence.csv", BS[1])
+    writeToCSV("generatedDatas/ex1/JTBruit.csv", JT[0])
+    writeToCSV("generatedDatas/ex1/JTSilence.csv", JT[1])
+    print(BS[0])
 
 print(getFetchingLists())
