@@ -4,8 +4,8 @@ import csv
 
 
 array = [['lib / Dossier','moyenne ligne','total lignes','ecart type lignes','moyenne caractère','total caractère','ecart type caractère']]
-array.append(operations.calculatesValues('Corpus_detourage/clean/', 'clean'))
-array.append(operations.calculatesValues('Corpus_detourage/html/', 'BS'))
+# array.append(operations.calculatesValues('Corpus_detourage/clean/', 'clean'))
+# array.append(operations.calculatesValues('Corpus_detourage/html/', 'BS'))
 array.append(statistics.calculatesValues())
 
 
