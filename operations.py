@@ -97,27 +97,26 @@ def calculatesValues(path, typeLib):
     standartDeviationCars = sqrt(sum)
     return [typeLib, moyLines, totalLines, standartDeviationLines, moyCars, totalCars, standartDeviationCars]
 
-def getFetchingListBS(path):
+def getFetchingList(path,part):
+    bruit = []
+    silence = []
     cleanPath="Corpus_detourage/clean/"
     fileListClean = os.listdir(cleanPath)
-    fileListBS = os.listdir(path)
-    for fileBS in fileListBS:
-        if(fileBS.replace('.txt','') in fileListClean):
-            with open(path+fileBS, 'r', encoding='ISO-8859-1') as file:
-                # print(len(list(file)))
-                with open(cleanPath+fileBS.replace('.txt',''),'r', encoding="UTF-8") as cleanFile:
-                    # print(len(list(cleanFile)))
-                    ecart=(len(list(file)))/(len(list(cleanFile)))
-                    print(str(len(list(file)))+" "+len(list(cleanFile)))+" "+str(ecart))
-                    #if  ecart>1:
-                    #    print("bruit")
-                    #else: 
-                    #    print("silence")
+    fileList = os.listdir(path+part)
+    for file in fileList:
+        if(file.replace('.txt','') in fileListClean):
+            with open(path+part+file, 'r', encoding='ISO-8859-1') as fileE:
+                with open(cleanPath+file.replace('.txt',''),'r', encoding="UTF-8") as cleanFile:
+                    if (len(list(fileE))>len(list(cleanFile))):
+                        bruit.append(file.replace('.txt',''))
+                    elif (len(list(fileE))<len(list(cleanFile))):
+                        print("silence")
+                        silence.append(cleanFile)
+    return [bruit,silence]
 
 def getFetchingLists():
-    BS = getFetchingListBS("Corpus_detourage/BS/")
-    # JT = getFetchingListJT()
-    # TODO Generate return
-    # return {BS, JT}
-
+    BS = getFetchingList("Corpus_detourage","/BS/")
+    JT = getFetchingList("Corpus_detourage","/JT/")
+    return [BS,JT]
+    
 getFetchingLists()
