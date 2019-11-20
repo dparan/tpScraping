@@ -45,19 +45,20 @@ def readDirBS(path):
     for f in fileList:
         filename: str = path + f
         # opens file
-        currentFile = open(filename, 'r', encoding='ISO-8859-1').read()
+        currentFile = open(filename, 'r', encoding='UTF-8', errors="ignore").read()
         soup = BeautifulSoup(currentFile, "html.parser")
         # Gets number of line
-        lines = soup.getText().split('\n')
+        lines = soup.find_all('p')
         lineNumber = len(lines) - 1
         # Counts number of char
         carNumber = 0
         newFileName = "Corpus_detourage/BS/" + f + ".txt"
-        newFile = open(newFileName, "a", encoding="UTF-8")
+        newFile = open(newFileName, "w", encoding="UTF-8")
         for line in lines:
-            currentLine = '<p>'+str(line)+'</p>'
+            currentLine = '<p>'+str(line.getText())+'</p>'
+            print(currentLine)
             carNumber += len(currentLine)
-            newFile.write(currentFile)
+            newFile.write(currentLine)
         newFile.close()
         # sets results values
         resultsArray.append([filename, lineNumber, carNumber])
@@ -103,11 +104,15 @@ def getFetchingListBS(path):
     for fileBS in fileListBS:
         if(fileBS.replace('.txt','') in fileListClean):
             with open(path+fileBS, 'r', encoding='ISO-8859-1') as file:
-                print(len(list(file)))
+                # print(len(list(file)))
                 with open(cleanPath+fileBS.replace('.txt',''),'r', encoding="UTF-8") as cleanFile:
-                    print(len(list(cleanFile)))
-
-    
+                    # print(len(list(cleanFile)))
+                    ecart=(len(list(file)))/(len(list(cleanFile)))
+                    print(str(len(list(file)))+" "+len(list(cleanFile)))+" "+str(ecart))
+                    #if  ecart>1:
+                    #    print("bruit")
+                    #else: 
+                    #    print("silence")
 
 def getFetchingLists():
     BS = getFetchingListBS("Corpus_detourage/BS/")
