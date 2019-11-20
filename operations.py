@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 from math import *
 import os
+import csv
+
 
 def readDirJT(path):
     print('lol')
@@ -117,6 +119,20 @@ def getFetchingList(path,part):
 def getFetchingLists():
     BS = getFetchingList("Corpus_detourage","/BS/")
     JT = getFetchingList("Corpus_detourage","/JT/")
-    return [BS,JT]
-    
-getFetchingLists()
+    liste=[]
+    for line in BS[0]:
+        liste.append([line,1,0])
+    for line in BS[1]:
+        liste.append([line,0,1])
+    for line in JT[0]:
+        if(line not in liste):
+            liste.append([line,1,0])
+    for line in JT[1]:
+        if(line not in liste):
+            liste.append([line,0,1])
+    with open('generatedDatas/ex1/resultat.csv', 'w') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerows(liste)
+    return liste
+
+print(getFetchingLists())
