@@ -1,6 +1,12 @@
 from bs4 import BeautifulSoup
 from math import *
 import os
+import csv
+
+def writeToCSV(filepath, liste):
+    with open(filepath, 'w') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerows(liste)
 
 def readDirJT(path):
     print('lol')
@@ -45,19 +51,20 @@ def readDirBS(path):
     for f in fileList:
         filename: str = path + f
         # opens file
-        currentFile = open(filename, 'r', encoding='ISO-8859-1').read()
+        currentFile = open(filename, 'r', encoding='UTF-8', errors="ignore").read()
         soup = BeautifulSoup(currentFile, "html.parser")
         # Gets number of line
-        lines = soup.find_all()
+        lines = soup.find_all('p')
         lineNumber = len(lines) - 1
         # Counts number of char
         carNumber = 0
         newFileName = "Corpus_detourage/BS/" + f + ".txt"
-        newFile = open(newFileName, "a", encoding="UTF-8")
+        newFile = open(newFileName, "w", encoding="UTF-8")
         for line in lines:
-            currentLine = '<p>'+str(line)+'</p>'
+            currentLine = '<p>'+str(line.getText())+'</p>'
+            print(currentLine)
             carNumber += len(currentLine)
-            newFile.write(currentFile)
+            newFile.write(currentLine)
         newFile.close()
         # sets results values
         resultsArray.append([filename, lineNumber, carNumber])
@@ -95,3 +102,31 @@ def calculatesValues(path, typeLib):
     sum /= len(resultsArray)
     standartDeviationCars = sqrt(sum)
     return [typeLib, moyLines, totalLines, standartDeviationLines, moyCars, totalCars, standartDeviationCars]
+
+def getFetchingList(path,part):
+    bruit = []
+    silence = []
+    cleanPath="Corpus_detourage/clean/"
+    fileListClean = os.listdir(cleanPath)
+    fileList = os.listdir(path+part)
+    for file in fileList:
+        if(file.replace('.txt','') in fileListClean):
+            with open(path+part+file, 'r', encoding='ISO-8859-1') as fileE:
+                with open(cleanPath+file.replace('.txt',''),'r', encoding="UTF-8") as cleanFile:
+                    if (len(list(fileE))>len(list(cleanFile))):
+                        bruit.append([file.replace('.txt','')])
+                    elif (len(list(fileE))<len(list(cleanFile))):
+                        print("silence")
+                        silence.append([file.replace('.txt','')])
+    return [bruit,silence]
+
+def getFetchingLists():
+    BS = getFetchingList("Corpus_detourage","/BS/")
+    JT = getFetchingList("Corpus_detourage","/JT/")
+    writeToCSV("generatedDatas/ex1/BSBruit.csv", BS[0])
+    writeToCSV("generatedDatas/ex1/BSSilence.csv", BS[1])
+    writeToCSV("generatedDatas/ex1/JTBruit.csv", JT[0])
+    writeToCSV("generatedDatas/ex1/JTSilence.csv", JT[1])
+    print(BS[0])
+
+print(getFetchingLists())
