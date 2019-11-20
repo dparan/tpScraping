@@ -48,7 +48,7 @@ def readDirBS(path):
         currentFile = open(filename, 'r', encoding='ISO-8859-1').read()
         soup = BeautifulSoup(currentFile, "html.parser")
         # Gets number of line
-        lines = soup.find_all()
+        lines = soup.getText().split('\n')
         lineNumber = len(lines) - 1
         # Counts number of char
         carNumber = 0
@@ -95,3 +95,24 @@ def calculatesValues(path, typeLib):
     sum /= len(resultsArray)
     standartDeviationCars = sqrt(sum)
     return [typeLib, moyLines, totalLines, standartDeviationLines, moyCars, totalCars, standartDeviationCars]
+
+def getFetchingListBS(path):
+    cleanPath="Corpus_detourage/clean/"
+    fileListClean = os.listdir(cleanPath)
+    fileListBS = os.listdir(path)
+    for fileBS in fileListBS:
+        if(fileBS.replace('.txt','') in fileListClean):
+            with open(path+fileBS, 'r', encoding='ISO-8859-1') as file:
+                print(len(list(file)))
+                with open(cleanPath+fileBS.replace('.txt',''),'r', encoding="UTF-8") as cleanFile:
+                    print(len(list(cleanFile)))
+
+    
+
+def getFetchingLists():
+    BS = getFetchingListBS("Corpus_detourage/BS/")
+    # JT = getFetchingListJT()
+    # TODO Generate return
+    # return {BS, JT}
+
+getFetchingLists()
