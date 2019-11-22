@@ -3,10 +3,12 @@ from math import *
 import os
 import csv
 
+
 def writeToCSV(filepath, liste):
     with open(filepath, 'w') as csvFile:
         writer = csv.writer(csvFile)
         writer.writerows(liste)
+
 
 def readDirJT(path):
     print('lol')
@@ -39,6 +41,7 @@ def readDirClean(path):
         totalLines += lineNumber
         totalCars += carNumber
     return [resultsArray, totalLines, totalCars, len(fileList)]
+
 
 def readDirBS(path):
     # Gets files from clean folder
@@ -103,6 +106,7 @@ def calculatesValues(path, typeLib):
     standartDeviationCars = sqrt(sum)
     return [typeLib, moyLines, totalLines, standartDeviationLines, moyCars, totalCars, standartDeviationCars]
 
+
 def getFetchingList(path,part):
     bruit = []
     silence = []
@@ -120,6 +124,7 @@ def getFetchingList(path,part):
                         silence.append([file.replace('.txt','')])
     return [bruit,silence]
 
+
 def getFetchingLists():
     BS = getFetchingList("Corpus_detourage","/BS/")
     JT = getFetchingList("Corpus_detourage","/JT/")
@@ -128,5 +133,6 @@ def getFetchingLists():
     writeToCSV("generatedDatas/ex1/JTBruit.csv", JT[0])
     writeToCSV("generatedDatas/ex1/JTSilence.csv", JT[1])
     print(BS[0])
+
 
 print(getFetchingLists())

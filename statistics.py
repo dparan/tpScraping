@@ -2,6 +2,7 @@ import os
 from math import *
 import jusText
 
+
 def file_char(filename):
     with open(filename, encoding="UTF-8") as f:
         characters = 0
@@ -11,8 +12,8 @@ def file_char(filename):
     return characters
 
 
-def file_len(fileName):
-    with open(fileName, encoding="UTF-8") as f:
+def file_len(filename):
+    with open(filename, encoding="UTF-8") as f:
         for i, l in enumerate(f):
             pass
     return i + 1
@@ -20,6 +21,7 @@ def file_len(fileName):
 
 resultsArray = []
 cleanArray = []
+
 
 def calculatesValues():
     jusText.createFiles()
