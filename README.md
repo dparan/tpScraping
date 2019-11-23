@@ -23,7 +23,7 @@ Dans le cas de beautifulSoup, la récupération s'est faite à partir de toutes 
 
 Ci-dessous un extrait du code permettant la récupération des lignes du fichier ainsi que la création d'un fichier contenant les éléments récupérés.
 
-``` python
+```python
 # opens file
 currentFile = 
     open(filename, 'r', encoding='UTF-8', errors="ignore").read()
@@ -75,7 +75,7 @@ Il s'agit de la moyenne des lignes et des caractères pour chaque fichier. Il n'
 L'écart type correspond a la moyenne des écarts à la moyenne. Ci-dessous un exemple de calcul pour ce projet : 
 
 
-``` python
+```python
     # calculates the standart deviation of lines
     sum = 0
     for res in resultsArray:
@@ -93,14 +93,14 @@ Avec l'utilisation de jusText, nous sommes forcés lors de notre scrapping d'att
 
 Pour déterminer la langue nous avons utilisé la bibliothèque langid. Nous pouvons classifier un fichier en fonction de sa langue grace à la fonction classify de la bibliothèque.
 
-```python=
+```python
 lang = langid.classify(response)
 paragraphs = justext.justext(response, justext.get_stoplist(convertISO(lang[0])))
 ```
 
 Il suffit alors de convertir le code ISO639-1 en langage naturel grâce à la fonction suivante :
 
-```python=
+```python
 def convertISO(ISOcode):
     switcher = {
         "fr": 'French',
@@ -120,7 +120,7 @@ Enfin, nous avons utilisé le fichier doc_lg.json pour avoir les vraies langues 
 
 Pour réaliser l'évaluation intrinsèque de nos résultats on évalue d'abord F-mesure, Rappel et précision pour tout les fichiers du répertoire qui nous intéresse (JT, BS, JT_langid, JT_trueLg, ...) : 
 
-```python=
+```python
     def compute_intrinsic(folder_path):
     rs = []
     file_list = os.listdir(folder_path)
@@ -154,7 +154,7 @@ npm install unfluff
 
 Pour scrapper l'ensemble de nos fichiers on parcours le dossier html et on utilise la fonction extractor de la librairie sur l'ensemble des données de nos fichiers d'origines. Il ne reste plus qu'à sauvegarder le résultat du scrapping dans un nouveau dossier UF.
 
-```javascript=
+```javascript
 const testFolder = 'Corpus_detourage\\html';
 const fs = require('fs');
 const extractor = require('unfluff');
